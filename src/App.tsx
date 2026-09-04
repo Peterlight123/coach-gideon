@@ -1,0 +1,47 @@
+import { Routes, Route, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import ChatWidget from "./components/ChatWidget";
+import NotFound from "./components/NotFound";
+
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Services from "./pages/Services";
+import Schedule from "./pages/Schedule";
+import Gallery from "./pages/Gallery";
+import Testimonials from "./pages/Testimonials";
+import Blog from "./pages/Blog";
+import Contact from "./pages/Contact";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
+export default function App() {
+  return (
+    <div className="d-flex flex-column min-vh-100">
+      <ScrollToTop />
+      <Navbar />
+      <main className="flex-grow-1">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/schedule" element={<Schedule />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/testimonials" element={<Testimonials />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+      <Footer />
+      <ChatWidget />
+    </div>
+  );
+}
