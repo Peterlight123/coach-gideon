@@ -21,6 +21,19 @@ Open that one file first — most items below are a single line change there.
 - [x] Confirmed the footer "Website Designed by" link points at `peterlightspeed.com` (not a
       placeholder domain) — update `designerCredit` in `siteContent.ts` if this ever needs to change
 
+## Deployment (GitHub Pages)
+
+- [x] Added `.github/workflows/deploy.yml` — builds with `npm run build` and publishes `dist/`
+- [x] Set `base` in `vite.config.ts` to `/coach-gideon/` so built asset URLs resolve under the
+      GitHub Pages project subpath
+- [x] Added a `postbuild` step that copies `index.html` → `404.html` so client-side routes
+      (e.g. `/about`) don't 404 on refresh — GitHub Pages has no server-side rewrites
+- [ ] If the GitHub repo is ever renamed away from `coach-gideon`, update `BASE_PATH` in
+      `vite.config.ts` to match (see README → "Deploying to GitHub Pages")
+- [ ] Once dependencies stabilize, run `npm install` locally and commit the generated
+      `package-lock.json` — the workflow currently uses `npm install` instead of the faster,
+      stricter `npm ci` because no lockfile exists yet
+
 ## Content to replace
 
 - [ ] Confirm/edit the biography text in `bio.paragraphs` (`siteContent.ts`) — currently the

@@ -11,7 +11,10 @@ if (!rootEl) {
 
 ReactDOM.createRoot(rootEl).render(
   <React.StrictMode>
-    <BrowserRouter>
+    {/* import.meta.env.BASE_URL mirrors the `base` set in vite.config.ts
+        (e.g. "/coach-gideon/"), so routing works correctly once the app
+        is deployed under a GitHub Pages project subpath. */}
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <App />
     </BrowserRouter>
   </React.StrictMode>

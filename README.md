@@ -83,7 +83,57 @@ through `src/content/images.ts`, which maps those filenames to the real bundled 
 └── TODO.md                     — everything still marked as a placeholder
 ```
 
+## Deploying to GitHub Pages
+
+This repo includes a ready-to-go GitHub Actions workflow at
+`.github/workflows/deploy.yml`. It builds the app with `npm run build` and
+publishes the built `dist/` folder — **not** the raw source — to GitHub
+Pages.
+
+1. Push this repo to GitHub.
+2. In the repo, go to **Settings → Pages** and set **Source** to
+   **"GitHub Actions"** (you've already done this).
+3. Push to `main` (or run the workflow manually from the **Actions** tab) —
+   it'll build and deploy automatically.
+4. Your site will be live at `https://<your-username>.github.io/coach-gideon/`.
+
+### If your repo isn't named `coach-gideon`
+
+Vite needs to know the subpath your site is served from. Open
+`vite.config.ts` and change `BASE_PATH` to match your actual repo name,
+e.g.:
+
+```ts
+const BASE_PATH = "/your-repo-name/";
+```
+
+If instead you're deploying to a GitHub **user/organization** site (a repo
+literally named `<username>.github.io`, served from the domain root, no
+subpath) or a custom domain, set:
+
+```ts
+const BASE_PATH = "/";
+```
+
+### Why the site showed a blank page with `main.tsx` / `favicon.svg` 404s
+
+That happens when the raw, unbuilt `index.html` gets published instead of
+the Vite production build — browsers can't execute a `.tsx` file directly,
+and the `/favicon.svg` reference (a dev-server-only convenience) doesn't
+resolve on a static host. The workflow above fixes this by always building
+first and only publishing `dist/`.
+
+### Client-side routing on GitHub Pages
+
+GitHub Pages is a static file host with no server-side rewrites, so a
+direct visit (or refresh) on a route like `/coach-gideon/about` would
+normally 404 — no literal file exists at that path. The build's
+`postbuild` script (`scripts/copy-404-page.mjs`) copies `dist/index.html`
+to `dist/404.html` so GitHub Pages serves the app for any unknown path,
+and React Router then renders the correct page from the URL.
+
 ## Contact Form (Formspree)
+
 
 The Contact page posts directly to [Formspree](https://formspree.io) — no backend required.
 
